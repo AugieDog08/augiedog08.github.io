@@ -1,3 +1,7 @@
+document.addEventListener("resize", () => {
+    resizeCanvas(window.innerWidth, window.innerHeight);
+});
+
 function preload() {
     logo = loadImage('/q5js_logo.webp');
   }
