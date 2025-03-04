@@ -1,34 +1,39 @@
-class Element {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
+class Tile {
+    constructor(tile) {
+        this.tile = tile;
+        this.character = tileset[tile];
     }
 }
 
-class Draw extends Element {
-    constructor(x, y) {
-        super(x, y);
-    }
-}
+let tileset = [".", ".", "_", "\'", "|", "/", "?", "\'", "\\", "|", "?", "-", "?", "?", "?"];
 
 let lastX = -1;
 let lastY = -1;
-let characters = [];
+let tiles = [];
+let pixels = [];
+
+const width = 50;
+const height = 25;
 
 function setup() { // runs first
     window.addEventListener("resize", resize);
     window.addEventListener("mouseup", mouseUp);
-    window.addEventListener("mousemove", mouseMove)
+    window.addEventListener("mousemove", mouseMove);
     createCanvas(window.innerWidth, window.innerHeight);
-    background('aqua');
+    background('gray');
 
-    let temp;
-    for (let row = 0; row < 100; row++) {
-        temp = [];
-        for (let col = 0; col < 50; col++) {
-            temp += "H";
+    for (let row = 0; row < height; row++) {
+        tiles.append([]);
+        for (let col = 0; col < width; col++) {
+            tiles[row].append(new Tile(1));
         }
-        characters += temp;
+    }
+
+    for (let row = 0; row < height*4; row++) {
+        pixels.append([]);
+        for (let col = 0; col < width*4; col++) {
+            pixels[row].append(0);
+        }
     }
 }
 
@@ -38,7 +43,7 @@ function preload() { // runs before setup
 
 function draw() { // runs every frame
     textSize(10);
-    text(toString());
+    text(toString(), 0, 0);
 }
 
 function resize() {
@@ -67,10 +72,12 @@ function mouseMove()
 
 function toString() {
     s = "";
-    for (let i = 0; i < characters.length; i++) {
-        s += characters[i].join();
+    for (let row = 0; row < height; row++) {
+        for (let col = 0; col < width; col++) {
+            s += tiles[row][col].character;
+        }
+        s += "\n";
     }
-    return s;
 }
 
 // 0001: .
