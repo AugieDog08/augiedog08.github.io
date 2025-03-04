@@ -3,9 +3,13 @@ class Tile {
         this.tile = tile;
         this.character = tileset[tile];
     }
+
+    changeTile() {
+        this.character = tileset[tile];
+    }
 }
 
-let tileset = [".", ".", "_", "\'", "|", "/", "?", "\'", "\\", "|", "?", "-", "?", "?", "?"];
+let tileset = ["", ".", ".", "_", "\'", "|", "/", "?", "\'", "\\", "|", "?", "-", "?", "?", "?"];
 
 let lastX = -1;
 let lastY = -1;
@@ -20,7 +24,7 @@ function setup() { // runs first
     window.addEventListener("mouseup", mouseUp);
     window.addEventListener("mousemove", mouseMove);
     createCanvas(window.innerWidth, window.innerHeight);
-    background('gray');
+    background('white');
 
     for (let row = 0; row < height; row++) {
         tiles.push([]);
@@ -36,6 +40,9 @@ function setup() { // runs first
         }
     }
 
+    tiles[5][5].tile = 5;
+    tiles[5][5].changeTile();
+
     textSize(16);
     textFont('monospace');
     textLeading(16);
@@ -46,27 +53,39 @@ function preload() { // runs before setup
 }
 
 function draw() { // runs every frame
-    background("gray");
+    background("white");
     strokeWeight(0);
     text(toString(), 0, 10);
     strokeWeight(1);
+    color("red");
+    circle(100, 100, 100);
 }
 
 function resize() {
     resizeCanvas(window.innerWidth, window.innerHeight);
-    background("gray");
 }
 
 function mouseUp()
 {
     lastX = -1;
     lastY = -1;
+    updateTiles()
+}
+
+function updateTiles()
+{
+    for (let row = 0; row < height; row+= 2) {
+        for (let col = 0; col < width; col+= 2) {
+            tiles[row][col].tile = 1 * pixels[row][col] + 2 * pixels[row][col+1] + 4 * pixels[row+1][col] + 8 * pixels[row+1][col+1];
+            changeTile();
+        }
+    }
 }
 
 function mouseMove()
 {
     if (mouseIsPressed) {
-        pixels[Math.floor(mousex / 4), Math.floor(mousey / 4)];
+        // pixels[Math.floor(mousex / 4), Math.floor(mousey / 4)] = 1;
     }
 }
 
