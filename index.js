@@ -12,8 +12,8 @@ let lastY = -1;
 let tiles = [];
 let pixels = [];
 
-const width = 50;
-const height = 25;
+const width = 500;
+const height = 250;
 
 function setup() { // runs first
     window.addEventListener("resize", resize);
@@ -23,18 +23,22 @@ function setup() { // runs first
     background('gray');
 
     for (let row = 0; row < height; row++) {
-        tiles.append([]);
+        tiles.push([]);
         for (let col = 0; col < width; col++) {
-            tiles[row].append(new Tile(1));
+            tiles[row].push(new Tile(1));
         }
     }
 
     for (let row = 0; row < height*4; row++) {
-        pixels.append([]);
+        pixels.push([]);
         for (let col = 0; col < width*4; col++) {
-            pixels[row].append(0);
+            pixels[row].push(0);
         }
     }
+
+    textSize(16);
+    textFont('monospace');
+    textLeading(16);
 }
 
 function preload() { // runs before setup
@@ -42,12 +46,15 @@ function preload() { // runs before setup
 }
 
 function draw() { // runs every frame
-    textSize(10);
-    text(toString(), 0, 0);
+    background("gray");
+    strokeWeight(0);
+    text(toString(), 0, 10);
+    strokeWeight(1);
 }
 
 function resize() {
     resizeCanvas(window.innerWidth, window.innerHeight);
+    background("gray");
 }
 
 function mouseUp()
@@ -59,14 +66,7 @@ function mouseUp()
 function mouseMove()
 {
     if (mouseIsPressed) {
-        strokeWeight(1);
-        stroke("white");
-        if (lastX != -1)
-        {
-            line(lastX, lastY, mouseX, mouseY);
-        }
-        lastX = mouseX;
-        lastY = mouseY;
+        pixels[Math.floor(mousex / 4), Math.floor(mousey / 4)];
     }
 }
 
@@ -78,6 +78,7 @@ function toString() {
         }
         s += "\n";
     }
+    return s;
 }
 
 // 0001: .
